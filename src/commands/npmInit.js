@@ -1,11 +1,10 @@
 import inquirer from 'inquirer'
-import NpmConfig from '../utils/NpmConfig'
 import Promise from 'promise'
 import colors from 'colors'
 
 export default function npmInit() {
     return new Promise((resolve, reject) => {
-        let config = new NpmConfig(`${process.cwd()}/package.json`)
+        let config = global.npmConfig
         if (config.onDisk) {
             inquirer.prompt([
                 {

@@ -4,9 +4,8 @@ import NpmConfig from '../utils/NpmConfig'
 import colors from 'colors'
 
 export default function init() {
-    let npmConfig = new NpmConfig(`${process.cwd()}/package.json`)
-    if (npmConfig.onDisk) {
-        prompt(npmConfig)
+    if (global.npmConfig.onDisk) {
+        prompt(global.npmConfig)
     } else {
         console.log(colors.white.bgRed('Your project does not have a package.json file.\n'))
         npmInit().then((config) => {
@@ -24,18 +23,10 @@ function prompt(config) {
             name: 'languages',
             choices: [
                 {
-                    name: 'php'
-                },
-                {
                     name: 'javascript'
-                },
-                {
-                    name: 'css'
-                },
-                {
-                    name: 'sass'
                 }
-            ]
+            ],
+            default: ['javascript']
         },
         {
             type: 'confirm',
@@ -55,5 +46,15 @@ function prompt(config) {
                 return answers.languages.indexOf('sass') > -1
             }
         }
-    ])
+    ], save)
+}
+
+function save(answers) {
+    global.npmConfig.update({
+        config: {
+            naoned: {
+                languages: answers.languages
+            }
+        }
+    })
 }

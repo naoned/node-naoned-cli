@@ -11,7 +11,7 @@ export default class NpmConfig {
         this.path = templatePath
 
         try {
-            this.data = JSON.parse(fs.readFileSync(templatePath, { encoding: 'utf8' }))
+            this.data = merge.recursive(true, this.data, JSON.parse(fs.readFileSync(templatePath, { encoding: 'utf8' })))
             this.onDisk = true
         } catch (err) {
             // Template not on disk
@@ -94,5 +94,10 @@ export const defaultTemplate = {
     },
     author: '',
     license: 'UNLICENSED',
-    private: true
+    private: true,
+    config: {
+        naoned: {
+            languages: []
+        }
+    }
 }

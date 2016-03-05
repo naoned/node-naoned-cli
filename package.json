@@ -8,13 +8,27 @@
         "build": "babel src --out-dir dist",
         "prepublish": "npm run build"
     },
+    "author": "Rémi Gebski",
+    "license": "UNLICENSED",
+    "private": false,
+    "config": {
+        "naoned": {
+            "languages": [
+                "javascript"
+            ]
+        },
+        "ghooks": {
+            "commit-msg": "naoned hook commit-msg"
+        },
+        "commitizen": {
+            "path": "./node_modules/naoned-cz-conventional-changelog"
+        }
+    },
     "homepage": "https://github.com/naoned/node-naoned-cli",
     "repository": {
         "type": "git",
         "url": "https://github.com/naoned/node-naoned-cli.git"
     },
-    "author": "Rémi Gebski",
-    "license": "UNLICENSED",
     "dependencies": {
         "colors": "^1.1.2",
         "fs": "0.0.2",
@@ -37,11 +51,5 @@
         "eslint-config-naoned": "^0.1.0",
         "ghooks": "^1.0.3",
         "naoned-cz-conventional-changelog": "^0.1.2"
-    },
-    "config": {
-        "commitizen": {
-            "path": "./node_modules/naoned-cz-conventional-changelog"
-        }
-    },
-    "private": false
+    }
 }
