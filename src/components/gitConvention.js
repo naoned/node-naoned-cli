@@ -7,6 +7,9 @@ export default class gitConvention {
         console.log(colors.inverse('Configuring Commitizen...\n'))
         global.npmConfig.update({
             config: {
+                ghooks: {
+                    'commit-msg': 'naoned hook commit-msg'
+                },
                 commitizen: {
                     path: './node_modules/naoned-cz-conventional-changelog'
                 }

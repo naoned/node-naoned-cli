@@ -75,7 +75,7 @@ export default class InitCommand {
         gitConvention.install(dependencies)
 
         if (answers.languages.indexOf('javascript') > -1) {
-            jsConvention.install(dependencies)
+            jsConvention.install(dependencies, answers.es6)
         }
 
         dependencies.install()

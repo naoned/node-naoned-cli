@@ -1,7 +1,9 @@
 import sh from 'shelljs'
+import EsLintConfig from '../utils/EsLintConfig'
+import { es6Template } from '../utils/EsLintConfig'
 
 export class jsConvention {
-    install (dependencies) {
+    install (dependencies, isEs6) {
         dependencies.cmd('npm i --save-dev eslint-config-naoned eslint')
         global.npmConfig.update({
             config: {
@@ -10,6 +12,9 @@ export class jsConvention {
                 }
             }
         }, true)
+        let template = isEs6 ? es6Template : null
+        let esLintConfig = new EsLintConfig(`${process.cwd()}/.eslintrc`, template)
+        esLintConfig.save()
     }
 
     registerHooks (gitHooks) {
@@ -21,6 +26,7 @@ export class jsConvention {
         if (!filesToCheck.length) {
             return errors
         }
+        sh.cd(process.cwd())
         if (sh.exec(`node_modules/eslint/bin/eslint.js --color --no-ignore ${filesToCheck.join(' ')}`).code > 0) {
             errors.push({
                 type: 'javascript',

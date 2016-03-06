@@ -58,16 +58,14 @@ export default class Git {
         this.clearTempStaging()
         let stagedFiles = []
         files.forEach((file) => {
-            let id = sh.exec(`git diff-index --cached HEAD ${file} | cut -d " " -f4`, { silent: true }).stdout.trim()
+            let id = sh.exec(`git diff-index --cached ${against} ${file} | cut -d " " -f4`, { silent: true }).stdout.trim()
             let directory = file.replace(/[^\/]+?$/, '')
             // create staged version of file in temporary staging area with the same
             // path as the original file so that the phpcs ignore filters can be applied
-            sh.exec(`mkdir -p "${STAGING_DIR}/${directory}"`)
-            sh.exec(`git cat-file blob ${id} > "${STAGING_DIR}/${file}"`)
-            if (typeof pattern  === 'undefined') {
+            if (typeof pattern  === 'undefined' || pattern.test(file)) {
                 stagedFiles.push(`${STAGING_DIR}/${file}`)
-            } else if (pattern.test(file)) {
-                stagedFiles.push(`${STAGING_DIR}/${file}`)
+                sh.exec(`mkdir -p "${STAGING_DIR}/${directory}"`)
+                sh.exec(`git cat-file blob ${id} > "${STAGING_DIR}/${file}"`)
             }
         })
         return stagedFiles
