@@ -23,7 +23,7 @@ export default class gitConvention {
 
     commitMsg (errors) {
         const pattern = /^((fixup! |squash! )?(\w+)(?:\(([^\)\s]+)\))?: (.+))(?:\n|$)/
-        const types = ['feat', 'fix', 'docs', 'style', 'refact', 'perf', 'test', 'misc', 'revert']
+        const types = ['feat', 'fix', 'docs', 'style', 'refact', 'perf', 'test', 'misc', 'revert', 'git']
         const maxLength = 100
         const msg = global.git.getCommitMsg()
         const match = pattern.exec(msg)
