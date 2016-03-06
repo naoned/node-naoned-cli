@@ -6,20 +6,10 @@ Currently installs a javascript Linter, a git message validator and [Commitizen]
 #### Installation
 You must first install **[node & npm](https://github.com/nodesource/distributions)** then :
 ```
-npm install npm-naoned -g
+npm install naoned-cli -g
 ```
 
 #### Usage
 Inside the root folder of your project type :
-```
-naoned init
-```
-By default `naoned init` configures the javascript linter to be ES6. If you are using ES5 use :
-```
-naoned init --es5
-```
-You must have a `package.json` available for `naoned init` to run.
-
-#### Tools
-`naoned init` installs [Commitizen](https://commitizen.github.io/cz-cli/)
-- **`git cz`**: Start a command line prompt to write messages conforming to our conventions
+- `naoned init`: Start a brief quizz setting up your project with the necessary tools
+- `naoned npm init`: Similar to npm init
