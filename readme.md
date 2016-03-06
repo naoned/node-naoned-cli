@@ -12,4 +12,4 @@ npm install naoned-cli -g
 #### Usage
 Inside the root folder of your project type :
 - `naoned init`: Start a brief quizz setting up your project with the necessary tools
-- `naoned npm init`: Similar to npm init
+- `naoned npm-init`: Similar to npm init (naoned init calls it if no package.json is found)
