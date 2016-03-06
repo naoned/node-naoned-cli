@@ -1,7 +1,3 @@
-// import init from './commands/init'
-// import npmInit from './commands/npmInit'
-// import hook from './commands/hook'
-
 import InitCommand from './commands/InitCommand'
 import NpmInitCommand from './commands/NpmInitCommand'
 import HookCommand from './commands/HookCommand'
