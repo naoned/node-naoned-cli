@@ -34,7 +34,7 @@ export default class NpmConfig {
             inquirer.prompt([
                 {
                     type: 'confirm',
-                    message: `Is this ok?\n${JSON.stringify(newConfig, null, 2)}\n`,
+                    message: `Is this ok?\n${JSON.stringify(newConfig, null, 4)}\n`,
                     name: 'confirm'
                 }
             ], (answers) => {

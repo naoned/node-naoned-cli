@@ -1,9 +1,11 @@
 import Promise from 'promise'
 import colors from 'colors'
+import shelljs from 'shelljs'
 
 export default class Cli {
     constructor () {
         this.commands = {}
+        this.sh = shelljs
     }
 
     register (commands) {

@@ -1,6 +1,17 @@
+import colors from 'colors'
+
 export default class gitConvention {
     install (dependencies) {
         dependencies.cmd('npm i --save-dev ghooks naoned-cz-conventional-changelog')
+
+        console.log(colors.inverse('Configuring Commitizen...\n'))
+        global.npmConfig.update({
+            config: {
+                commitizen: {
+                    path: './node_modules/naoned-cz-conventional-changelog'
+                }
+            }
+        }, true)
     }
 
     registerHooks (gitHooks) {
