@@ -1,34 +1,35 @@
-import init from './commands/init'
-import npmInit from './commands/npmInit'
-import hook from './commands/hook'
+// import init from './commands/init'
+// import npmInit from './commands/npmInit'
+// import hook from './commands/hook'
+
+import InitCommand from './commands/InitCommand'
+import NpmInitCommand from './commands/NpmInitCommand'
+import HookCommand from './commands/HookCommand'
 
 import NpmConfig from './utils/NpmConfig'
 import Context from './utils/Context'
 import Git from './utils/Git'
+import Cli from './utils/Cli'
+
+import gitConvention from './components/gitConvention'
+import jsConvention from './components/jsConvention'
 
 export function bootstrap(args) {
     global.npmConfig = new NpmConfig(`${process.cwd()}/package.json`)
     global.git = new Git(`${process.cwd()}/.git`)
     global.context = new Context()
-    global.args = args
+    global.cli = new Cli()
 
-    require('./components/gitConvention')
+    global.git.hooks.register([
+        gitConvention,
+        jsConvention
+    ])
 
-    cli()
-}
+    global.cli.register([
+        InitCommand,
+        NpmInitCommand,
+        HookCommand
+    ])
 
-export function cli() {
-    switch (global.args[0]) {
-    case 'init':
-        init()
-        break
-    case 'npm-init':
-        npmInit()
-        break
-    case 'hook':
-        hook(global.args[1])
-        break
-    default:
-        console.log(`No command ${global.args[0]}`)
-    }
+    global.cli.start(args)
 }

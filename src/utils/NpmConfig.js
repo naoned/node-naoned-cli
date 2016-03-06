@@ -14,7 +14,7 @@ export default class NpmConfig {
             this.data = merge.recursive(true, this.data, JSON.parse(fs.readFileSync(templatePath, { encoding: 'utf8' })))
             this.onDisk = true
         } catch (err) {
-            // Template not on disk
+            // Config not on disk
         }
 
         if (template) {
@@ -29,7 +29,7 @@ export default class NpmConfig {
         return this.data
     }
 
-    save(newConfig) {
+    saveWithConfirm(newConfig) {
         return new Promise((resolve, reject) => {
             inquirer.prompt([
                 {
@@ -39,24 +39,37 @@ export default class NpmConfig {
                 }
             ], (answers) => {
                 if (answers.confirm) {
-                    try {
-                        fs.writeFileSync(this.path, JSON.stringify(newConfig, null, 4))
-                        this.data = newConfig
-                        console.log(colors.white.bgGreen(`Saved npm config to ${this.path}`))
-                        console.log('\n')
-                        resolve(this.get())
-                    } catch (err) {
-                        console.error(err)
+                    this.save(newConfig).then((conf) => {
+                        resolve(conf)
+                    }, (err) => {
                         reject(err)
-                    }
+                    })
                 }
             })
-            this.onDisk = true
         })
     }
 
-    update(newData) {
-        return this.save(merge.recursive(true, this.data, newData))
+    save(config) {
+        return new Promise((resolve, reject) => {
+            try {
+                fs.writeFileSync(this.path, JSON.stringify(config, null, 4))
+                this.data = config
+                console.log(colors.white.bgGreen(`Saved npm config to ${this.path}`))
+                console.log('\n')
+                this.onDisk = true
+                resolve(this.get())
+            } catch (err) {
+                console.error(err)
+                reject(err)
+            }
+        })
+    }
+
+    update(newData, force = false) {
+        if (force) {
+            return this.save(merge.recursive(true, this.data, newData))
+        }
+        return this.saveWithConfirm(merge.recursive(true, this.data, newData))
     }
 
     getName() {
@@ -72,7 +85,10 @@ export default class NpmConfig {
     }
 
     getRepository() {
-        return this.data.repository.url || ''
+        if (typeof this.data.repository !== 'undefined' && typeof this.data.repository.url !== 'undefined') {
+            return this.data.repository.url
+        }
+        return ''
     }
 
     getAuthor() {

@@ -1,5 +1,6 @@
 import colors from 'colors'
 import alert from './alert'
+import Promise from 'promise'
 
 export default class GitHooks {
     constructor() {
@@ -25,7 +26,15 @@ export default class GitHooks {
         ]
     }
 
-    register (context, hookName, callback) {
+    register (conventions) {
+        conventions.forEach((convention) => {
+            if (typeof convention.registerHooks === 'function') {
+                convention.registerHooks(this)
+            }
+        })
+    }
+
+    add (context, hookName, convention) {
         if (this.hooksOrder.indexOf(hookName) === -1) {
             throw new Error('Wrong hook name')
         }
@@ -38,28 +47,33 @@ export default class GitHooks {
                 this.lastHook = hookName
             }
         }
-        this.hooks[hookName][context].push(callback)
+        this.hooks[hookName][context].push(convention)
     }
 
     run (hookName, contextList) {
-        let errors = []
-        contextList.forEach((context) => {
-            if (typeof this.hooks[hookName][context] !== 'undefined') {
-                this.hooks[hookName][context].forEach((callback) => {
-                    callback(errors)
+        return new Promise((resolve) => {
+            let errors = []
+            contextList.forEach((context) => {
+                if (typeof this.hooks[hookName][context] !== 'undefined') {
+                    this.hooks[hookName][context].forEach((convention) => {
+                        // Transform the hookName to camelCase and call it on the convention
+                        convention[hookName.replace(/(\-[a-z])/g, ($1) => $1.toUpperCase().replace('-',''))](errors)
+                    })
+                }
+            })
+
+            resolve()
+
+            if (errors.length) {
+                errors.forEach((error) => {
+                    console.error(colors.white.bgRed(`${error.type}: ${error.message}`))
                 })
+                alert.error()
+                process.exit(1)
+            } else if (hookName === this.lastHook) {
+                alert.success()
             }
         })
-
-        if (errors.length) {
-            errors.forEach((error) => {
-                console.error(colors.white.bgRed(`${error.type}: ${error.message}`))
-            })
-            alert.error()
-            process.exit(1)
-        } else if (hookName === this.lastHook) {
-            alert.success()
-        }
     }
 
     isHookFiredLast (hookName, context) {
