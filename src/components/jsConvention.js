@@ -3,6 +3,13 @@ import sh from 'shelljs'
 export class jsConvention {
     install (dependencies) {
         dependencies.cmd('npm i --save-dev eslint-config-naoned eslint')
+        global.npmConfig.update({
+            config: {
+                ghooks: {
+                    'pre-commit': 'naoned hook pre-commit'
+                }
+            }
+        }, true)
     }
 
     registerHooks (gitHooks) {

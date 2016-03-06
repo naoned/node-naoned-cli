@@ -18,7 +18,8 @@
       ]
     },
     "ghooks": {
-      "commit-msg": "naoned hook commit-msg"
+      "commit-msg": "naoned hook commit-msg",
+      "pre-commit": "naoned hook pre-commit"
     },
     "commitizen": {
       "path": "./node_modules/naoned-cz-conventional-changelog"

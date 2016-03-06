@@ -1,3 +1,6 @@
+import colors from 'colors'
+colors.enabled = true
+
 import InitCommand from './commands/InitCommand'
 import NpmInitCommand from './commands/NpmInitCommand'
 import HookCommand from './commands/HookCommand'
