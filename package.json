@@ -37,8 +37,7 @@
         "merge": "^1.2.0",
         "promise": "^7.1.1",
         "shelljs": "^0.6.0",
-        "sprintf-js": "^1.0.3",
-        "validate-commit-msg": "^2.1.0"
+        "sprintf-js": "^1.0.3"
     },
     "bin": {
         "naoned": "./bin/naoned"
