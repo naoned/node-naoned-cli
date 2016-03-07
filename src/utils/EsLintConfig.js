@@ -89,6 +89,7 @@ export const es6Template = {
         es6: true,
         browser: true
     },
+    parser: 'babel-eslint',
     ecmaFeatures: {
         sourceType: 'module'
     },

@@ -4,7 +4,13 @@ import { es6Template } from '../utils/EsLintConfig'
 
 export class jsConvention {
     install (dependencies, isEs6) {
-        dependencies.cmd('npm i --save-dev eslint-config-naoned eslint')
+        // Force eslint 2.2.x because 2.3.0 introduced a problem with babel-eslint
+        // see: https://github.com/eslint/eslint/issues/5476
+        let listdependencies = ['eslint-config-naoned eslint@2.2.x']
+        if (isEs6) {
+            listdependencies.push('babel-eslint@next')
+        }
+        dependencies.cmd(`npm i --save-dev ${listdependencies.join(' ')}`)
         global.npmConfig.update({
             config: {
                 ghooks: {
