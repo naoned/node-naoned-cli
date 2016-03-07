@@ -6,7 +6,7 @@ Currently installs a javascript Linter, a git message validator and [Commitizen]
 #### Installation
 You must first install **[node & npm](https://github.com/nodesource/distributions)** then :
 ```
-npm install naoned-cli -g
+npm install commitizen naoned-cli -g
 ```
 
 #### Usage
